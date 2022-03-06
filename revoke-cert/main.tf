@@ -6,6 +6,6 @@ resource "null_resource" "create_certificate" {
 
  provisioner "local-exec" {
 
-    command = "/bin/bash /opt/docker/terraform/revoke-certificate"
+    command = "/bin/bash ../revoke-certificate"
   }
 }
