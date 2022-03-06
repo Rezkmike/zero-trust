@@ -1,8 +1,8 @@
 #!/bin/bash
 set -eu
 
-## Sourcing environment varibles from env.sh
-source /opt/docker/terraform/env.sh
+## Sourcing environment variables from env.sh
+#source /opt/docker/terraform/env.sh
 
 echo Creating cert for $CERT_NAME
 echo Common name: $COMMON_NAME
