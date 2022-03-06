@@ -1,0 +1,20 @@
+#!/bin/bash
+set -eu
+
+source /opt/docker/terraform/env.sh
+echo Creating cert for $CERT_NAME
+echo Common name: $COMMON_NAME
+echo TTL: $CERT_TTL
+
+PROJ_DIR="/opt/output/$CERT_NAME"
+mkdir -p $PROJ_DIR
+
+## Stored the new created certificate to Vault
+vault write pki_int/issue/logicmy-com ttl=$CERT_TTL common_name="$COMMON_NAME" -format=json > $PROJ_DIR/$CERT_NAME.json
+
+## Output the result to folder
+cat $PROJ_DIR/$CERT_NAME.json | jq -r '.data.certificate' > $PROJ_DIR/{{$CERT_NAME}}_cert.pem
+cat $PROJ_DIR/$CERT_NAME.json | jq -r '.data.private_key' > $PROJ_DIR/{{$CERT_NAME}}_key.pem
+cat $PROJ_DIR/$CERT_NAME.json | jq -r '.data.issuing_ca' > $PROJ_DIR/ca.pem
+cat $PROJ_DIR/$CERT_NAME.json | jq -r '.data.ca_chain[]' > $PROJ_DIR/ca_chain.pem
+cat $PROJ_DIR/$CERT_NAME.json | jq -r '.data.serial_number' > $PROJ_DIR/serial_number.txt
