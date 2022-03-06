@@ -5,10 +5,10 @@ source /opt/docker/terraform/env.sh
 echo Revoking certificate for $COMMON_NAME
 
 PROJ_DIR="/opt/output/$CERT_NAME"
-serial_number=$(cat $PROJ_NAME/serial_number.txt)
+serial_number=$(cat $PROJ_DIR/serial_number.txt)
 
 ## Revoke certificate
 vault write pki_int/revoke serial_number="$serial_number"
 
 ## Remove project certificate folder
-sudo rm -rf /opt/docker/terraform/create-cert/output/$CERT_NAME
+sudo rm -rf $PROJ_DIR 
